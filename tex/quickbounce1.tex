@@ -1,0 +1,126 @@
+\documentclass[a4]{article}
+\usepackage{hyperref}
+\usepackage{color}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{epsfig}
+\usepackage{graphics}
+\usepackage{graphicx}
+
+\definecolor{code}{rgb}{0.0,0.5,0.5}
+\hypersetup{baseurl=http://comptlsci.anu.edu.au/}
+
+%----------------------------------------------------
+% load in environment (via input for tth)
+%----------------------------------------------------
+%%tth: \input{wrapper-header.tex}
+
+
+\begin{document}
+
+{\color{code}\hrule
+\begin{verbatim}
+#########################################
+# Import the library(s)
+#########################################
+from visual import *
+from random import random
+
+
+##########################################
+# Create Wall(s)
+##########################################
+thk = 0.3
+side = 4.0
+s2 = 2*side - thk
+s3 = 2*side + thk
+
+wallR = box (pos=vector( side, 0, 0), length=thk, height=s2, width=s3, color = color.red)
+wallL = box (pos=vector(-side, 0, 0), length=thk, height=s2, width=s3, color = color.red)
+wallB = box (pos=vector(0, -side, 0), length=s3, height=thk, width=s3, color = color.blue)
+wallT = box (pos=vector(0, side, 0), length=s3, height=thk, width=s3, color = color.blue)
+wallBK = box(pos=vector(0, 0, -side), length=s2, height=s2, width=thk, color = (0.7,0.7,0.7))
+
+
+##########################################
+# Create Ball(s)
+##########################################
+no_particles=30
+ball_radius=1.0
+maxpos=side-.5*thk-ball_radius
+maxv=1.0
+D2=(2*ball_radius)**2
+
+ball_list=[]
+p_list=[]
+pos_list=[]
+for i in arange(no_particles):
+    ball = sphere(color = color.green, radius=ball_radius)
+    p=[2*maxv*(random()-.5), 2*maxv*(random()-.5),2*maxv*(random()-.5)]
+    p_list.append(p)
+    position=[2*maxpos*(random()-0.5), 2*maxpos*(random()-0.5), 2*maxpos*(random()-0.5)]
+    pos_list.append(position)
+    ball.pos=vector(position)
+    ball_list.append(ball)
+
+p_array=array(p_list)
+pos_array=array(pos_list)
+
+##########################################
+# Time loop for moving Ball(s)
+###########################################
+ltriang=fromfunction(lambda i,j: less_equal(j,i), [no_particles,no_particles])
+
+dt = 0.05
+
+while 1:
+    rate(100)
+
+    ######################################
+    # Move Particles
+    ######################################
+    pos_array=pos_array+p_array*dt
+
+    ######################################
+    # Check wall collisions
+    ######################################
+    putmask(p_array,greater(pos_array,maxpos),-p_array)
+    putmask(pos_array,greater(pos_array,maxpos),2*maxpos-pos_array)
+    putmask(p_array,less_equal(pos_array,-maxpos),-p_array)
+    putmask(pos_array,less_equal(pos_array,-maxpos),-2*maxpos-pos_array)
+
+    ######################################
+    # Check particle collisions
+    ######################################
+    separation=pos_array-pos_array[:,NewAxis]
+    sepmag2=add.reduce(separation*separation,-1)
+    putmask(sepmag2,ltriang,4*D2)
+    hit=less_equal(sepmag2,D2)
+    hit_list=sort(nonzero(hit.flat))
+
+    for ij in hit_list:
+        i, j = divmod(ij,no_particles)
+        sepmag=sqrt(sepmag2[i,j])
+        direction=separation[i,j]/sepmag
+        pi=dot(p_array[i],direction)
+        pj=dot(p_array[j],direction)
+        exchange=pj-pi
+        p_array[i]=p_array[i]+exchange*direction
+        p_array[j]=p_array[j]-exchange*direction
+
+        overlap=2*ball_radius-sepmag
+        pos_array[i]=pos_array[i]-overlap*direction
+        pos_array[j]=pos_array[j]+overlap*direction
+
+    ######################################
+    # Update position and velocity
+    # of balls for plotting
+    ######################################
+    for i in arange(len(ball_list)):
+        ball_list[i].pos=vector(pos_array[i])
+        ball_list[i].velocity=vector(p_array[i])
+
+\end{verbatim}\hrule}
+
+%%tth: \input{wrapper-tail.tex}
+\end{document}

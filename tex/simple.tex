@@ -1,0 +1,527 @@
+\documentclass[a4paper]{letter}
+\usepackage{hyperref}
+\usepackage{color}
+
+\title{Tutorial in Computational Science using Visual Python}
+
+\begin{document}
+\definecolor{code}{cmyk}{1,0,1 ,.5}
+
+
+
+\section{Introduction to Visual python: Simple motion}
+The first section of the tutorial introduces you to programming in visual python by stepping 
+through a program to display a ball bouncing around inside a box.  
+This program will later be a modified to become a simulation of an ideal gas.
+\subsection{Your First Program}
+Start IDLE by clicking on the snake icon on the panel at the bottom of your desktop. 
+A window labeled 'Untitled' should appear. 
+This is the window in which you will type your program.
+Type the following statements 
+(You can select the text below and then paste it into IDLE using the middle mouse button.):
+{\color{code}
+\begin{verbatim}
+from visual import * # This instructs Python to use the Visual graphics module
+ 
+wallR = box(pos=vector(6,0,0),size=vector(0.2,4,4),color=color.green) 
+#opens a window for displaying graphics and creates a thin green slab  
+#in it which we can refer to later as wallR
+ball = sphere(pos=vector(-5,0,0), radius=0.5, color=color.red)
+#creates a red sphere and names it ball
+\end{verbatim}}
+IDLE will colour different sections of the program to make it easier to read.
+For example comment lines, which begin with the \# symbol are red.
+The functions {\color{code}sphere} and {\color{code}box} are 'constructors' for 3D objects. 
+The position of an object's centre is specified in three dimensions 
+using a vector.
+
+Save your program as 'firstprogram.py' by choosing 'save as' from the file menu.
+
+\subsection{Running the Program}
+Now run your program by choosing 'Run program' from the 'Run' menu. 
+When you run the program, two new windows appear. 
+There is a window titled 'VPython,' in which you should see a red sphere, 
+and a window titled 'Output'. 
+
+In the VPython window, hold down the middle mouse button and move the mouse. 
+You should see that you are able to zoom into and out of the scene. 
+Now try holding down the right mouse button . 
+You should find that you are able to rotate your view of the scene.   
+
+You can stop the program by choosing 'Stop program' from the run menu.
+
+\subsection{Objects and attributes}
+Sphere and box are types of objects that visual python recognises and displays. 
+They have some attributes associated with them (such as 
+position({\color{code}pos}), colour({\color{code}color}) and 
+{\color{code}radius}) which can be set when you first define and name the object, 
+otherwise the default values will be used. 
+
+You can change the radius attribute of {\color{code}ball} after it has been constructed 
+with the statement:
+{\color{code}\begin{verbatim}
+ball.radius=0.5 
+\end{verbatim}}
+You can also add any new attributes you want to associate with the object, eg: 
+{\color{code}\begin{verbatim}
+ball.velocity=vector(2,.1,0) 
+\end{verbatim}}
+
+\subsection{Moving Objects}
+To move objects you will need a program loop that repeatedly updates the position. 
+This can be done with a while loop that repeats the indented lines of code following 
+the while statement, as long as the while condition remains true.
+
+Add the following while loop to the bottom of your program to make the ball move according to the velocity you gave it earlier:
+{\color{code}\begin{verbatim}
+timestep=0.05 
+ball.velocity=vector(2,.1,0) 
+while (1==1):
+    rate(20) 
+    ball.pos=ball.pos + ball.velocity*timestep 
+\end{verbatim}}
+In Python {\small\color{code}==} stands for 'is equal to' 
+so the statement {\small\color{code}1==1} always has a value of true,
+ and code inside the while loop will repeat forever. 
+The symbol {\small\color{code}=} is used for assignment, to set a new value for a variable. 
+
+In the above example the value of {\color{code}ball.pos + ball.velocity*timestep} 
+is calculated and then assigned as the new value for ball.pos. 
+Python knows how to add vectors and how to multiply them by a scalar so you don't have 
+to specify this element by element. 
+
+The rate statement specifies how many times each second the loop will be executed. 
+It allows you to control the animation speed so that the ball moves at the same speed 
+on faster computers.
+
+Run your program by choosing 'Run program' from the 'Run' menu.  
+You should observe that the ball moves to the right. 
+You can change how fast either by changing the rate or the timestep. 
+
+\subsection{Making the ball bounce: Logical tests}
+To make the ball bounce off the wall, we need to detect a collision between the ball and the wall. 
+A simple approach is to compare the x coordinate of the ball to the x coordinate of the wall, 
+and reverse the x component of the ball's velocity if the ball has moved too far to the right. 
+The components of vectors are attributes which can be referred to individually as .x, .y and .z.
+The logical test we would use to detect a collision and reverse the velocity might look like: 
+{\color{code}\begin{verbatim}
+if ball.x > wallR.x: 
+    ball.velocity.x = -ball.velocity.x 
+\end{verbatim}}
+The indented line after the if statement will be executed only if the 
+logical test in the previous line gives 'true' for the comparison. 
+If the result of the logical test is false 
+(that is, if the x coordinate of the ball is not greater than the x coordinate of the wall), 
+the indented line will be skipped. 
+Since we want this logical test to be performed every time the ball is moved, 
+we need to indent both of these lines so they are inside the while loop. 
+Your program should now look like this: 
+{\color{code}\begin{verbatim}
+from visual import * 
+
+# create wall
+wallR = box(pos=vector(6,0,0), size=vector(0.2,4,4), color=color.green) 
+#create a ball and define its velocity
+ball = sphere(pos=vector(-5,0,0), radius=0.5, color=color.red) 
+ball.velocity = vector(2,.1,0) 
+# set the timestep between position updates
+timestep = 0.05 
+while (1==1): 
+#the code within this while loop will be repeated 100 times per second
+    rate(100) 
+    ball.pos = ball.pos + ball.velocity*timestep #move ball
+    if ball.pos.x > wallR.pos.x: #check for collision with wall
+        ball.velocity.x = -ball.velocity.x #reflect velocity at collision
+\end{verbatim}}
+Run your program. 
+You should observe that the ball moves to the right, bounces off the wall,
+and then moves to the left, continuing off into space. 
+Note that our test is not very sophisticated. 
+{\color{code}ball.x} is at the center of the ball 
+and wallR.x is at the center of the wall so the ball penetrates the wall before it bounces. 
+
+Adjust the position test so that the ball bounces when the edge of the balls reaches 
+the edge of the wall (ie when {\color{code}ball.x + ball.radius == wallR.x-wallR.size.x/2}). 
+For a more realistic bounce you should reflect the position of the ball as well as its velocity. 
+You can add another wall at the left side of the display, and make the ball bounce off that wall also. 
+
+Your program should now look something like the following: 
+{\color{code}\begin{verbatim}
+from visual import * 
+# create walls
+wallR = box(pos=vector(6,0,0), size=vector(0.2,4,4), color=color.green) 
+wallL = box(pos=vector(-6,0,0), size=vector(0.2,4,4), color=color.green)
+# create a ball and define its velocity
+ball = sphere(pos=vector(-5,0,0), radius=0.5, color=color.red)  
+ball.velocity = vector(2,.1,0) 
+# set the maximum and minimum position for the centre of the ball
+max_xpos=wallR.pos.x-ball.radius-wallR.size.x/2 
+min_xpos=wallL.pos.x+ball.radius+wallL.size.x/2 
+# set the timestep between position updates
+timestep = 0.05 
+
+while (1==1): 
+#the code within this while loop will be repeated 100 times per second
+    rate(100) 
+    ball.pos = ball.pos + ball.velocity*timestep #move ball
+    if ball.x > max_xpos: #check for collision with right wall
+        ball.velocity.x = -ball.velocity.x #reflect velocity
+        ball.pos.x=2*max_xpos-ball.pos.x #reflect position
+    if ball.x < min_xpos: #check for collision with left wall
+        ball.velocity.x = -ball.velocity.x #reflect velocity
+        ball.pos.x=2*min_xpos-ball.pos.x #reflect position
+\end{verbatim}}
+This program makes a ball bounce backward and forward between two parallel walls. 
+The ball continues to bounce even when it has  passed the top of the walls. 
+
+You should be able to add and extend walls now so that the ball bounces inside a box. 
+You will want to have an invisible front wall so that you can see inside. 
+Play around with different starting positions and velocities for the ball, 
+and sizes for the ball and box. 
+
+If you have trouble, or are short of time you can copy the example solution from the link below.
+The next section is based on the solution to this exercise.
+%Example solution \href{bounce2.py}{bounce2.py}
+%\href{bounce2.html}{( html format )}
+\href{bounce2.html}{ Example Solution }
+
+\section{Simulating particle motion in a gas}
+In this section you will extend the bouncing ball program so that it simulates the motion 
+of atoms in a gas. 
+There will need to be many atoms in the box and they should bounce off each other as well
+ as off the sides of the box.
+We will need to set the initial distribution of atom positions and velocities, 
+but these distributions may evolve as the simulation progresses.
+
+\subsection{Random numbers}
+You can make the velocity of the ball different each time the program is run 
+by using a random number generator. 
+The random number generator is not part of standard python and needs to be 
+imported from the random module. 
+The random module contains random number generator for several different distributions. 
+You can import just a uniform distribution random number generator by inserting a line at 
+the beginning of the program (following the line {\color{code}from visual import *}): 
+{\color{code}\begin{verbatim}
+from random import uniform 
+\end{verbatim}}
+The function {\color{code}uniform(-1,1)} will give a random number between -1 and 1. 
+You can set a random ball velocity  by replacing the line setting the ball's velocity with: 
+{\color{code}\begin{verbatim}
+maxv=2. 
+ball.velocity=maxv*vector(uniform(-1,1),uniform(-1,1),uniform(-1,1))  
+\end{verbatim}} 
+\subsection{Multiple balls: Using lists}
+To simulate a gas we will need many particles inside the box. 
+One easy way of dealing with many particles is to put them into a list.
+ 
+Replace the section of code in which you created the ball 
+and gave it velocity with the following code 
+(it should be after the section defining the walls):
+{\color{code}\begin{verbatim}
+side=wallR.pos.x
+ballradius=0.4
+thk=wallR.size.x
+maxpos=side-thk/2-ballradius 
+maxv=2.0 
+
+ball1=sphere(color=color.green,radius=ballradius) 
+ball1.pos=maxpos*vector(uniform(-1,1),uniform(-1,1),uniform(-1,1)) 
+ball1.velocity=maxv*vector(uniform(-1,1),uniform(-1,1),uniform(-1,1)) 
+
+ball2=sphere(color=color.green,radius=ballradius) 
+ball2.pos=maxpos*vector(uniform(-1,1),uniform(-1,1),uniform(-1,1)) 
+ball2.velocity=maxv*vector(uniform(-1,1),uniform(-1,1),uniform(-1,1)) 
+
+ball3=sphere(color=color.green,radius=ballradius) 
+ball3.pos=maxpos*vector(uniform(-1,1),uniform(-1,1),uniform(-1,1)) 
+ball3.velocity=maxv*vector(uniform(-1,1),uniform(-1,1),uniform(-1,1))
+
+balls=[ball1,ball2,ball3] 
+\end{verbatim}}
+
+This gives a list containing three balls. Any type of object can go into a list. 
+In fact a list can be made up of several different types of object. 
+If you run the code now you will see three balls within the box but the section 
+of code to move the ball no longer works.
+
+To move all the balls in a list you use a {\color{code}for} loop. 
+In python a {\color{code}for} loop cycles through the elements of a list.
+The loop to move all the balls in the list would look like:
+{\color{code}\begin{verbatim}
+while (1==1): 
+    for ball in balls: 
+        ball.pos = ball.pos + ball.velocity*timestep 
+        if ball.pos.x > maxpos: 
+            ball.velocity.x = -ball.velocity.x 
+            ball.pos.x=2*maxpos-ball.pos.x 
+                                   . . . 
+\end{verbatim}}
+The code within the for loop is indented by two levels 
+since it is also inside the while loop (with code inside the if indented an additional level). 
+You can indent a whole section by selecting it and then choosing 'indent section' 
+from the format menu.
+(Try running the program now to see three balls bouncing within your box)
+
+A for loop can also be used to set up the list of balls more efficiently. 
+To add each ball to the list {\color{code}balls} use {\color{code}balls.append(ball)}.
+The construction of a for loop in python is slightly different from many 
+other programming languages which cycle through a set of numbers. 
+To get the more usual counted for loop you use {\color{code}range} to create a 
+list of integers between 0 and {\color{code}no\_particles-1}.
+
+Relplace the part of the code which created a list of three balls with this for loop 
+which creates a list of ten balls. 
+The for loop which moves the balls in the list should still work perfectly.  
+{\color{code}\begin{verbatim}
+no_particles=10 
+side=wallR.pos.x
+ballradius=0.4
+thk=wallR.size.x
+maxpos=side-thk/2-ballradius 
+maxv=2.0 
+balls=[]
+for i in range(no_particles): 
+    ball=sphere(color=color.green,radius=ballradius) 
+    ball.pos=maxpos*vector(uniform(-1,1),uniform(-1,1),uniform(-1,1)) 
+    ball.velocity=maxv*vector(uniform(-1,1),uniform(-1,1),uniform(-1,1)) 
+    balls.append(ball) 
+\end{verbatim}}
+
+\subsection{Particle interactions}
+You should now have a program that shows many particles bouncing around inside a box. 
+At the moment the balls are simply passing through each other 
+(make the ball radius large to see this more clearly). 
+For this to be a realistic model of a gas the particles need to interact in some fashion. 
+
+Different 'interaction potentials' could be used depending on the type of molecule making up 
+the gas. 
+For an ideal gas an appropriate interaction is 'hard sphere collisions' 
+--- the balls bounce off each other the same way they bounce off the walls. 
+
+\subsubsection{Detecting a collision}
+At each time step we need to check whether any particles have collided. 
+For each pair of particles we need to check whether the distance between 
+them is less than the sum of their radii. 
+For example add the following lines to the end of your program, 
+after you have updated the position of all the particles.  
+The indentation should place it within the while loop but outside the other for loop.
+{\color{code}\begin{verbatim}
+    for ball in balls: 
+        for otherball in balls:
+            if not ball == otherball:
+                distance=mag(otherball.pos-ball.pos) 
+                if distance<(ball.radius+otherball.radius): 
+                    print 'collision' , distance
+\end{verbatim}}
+{\color{code}mag} is a function that returns the size (magnitude) of a vector. 
+
+Run your program.
+Notice that every time a pair of balls collide in the display window the word 'collision' 
+is printed twice to the output window. 
+This is because the loop goes through every pair of balls twice. 
+To check each pair only once the second loop should only check against balls with 
+higher index than the first. To do this replace the collision detection code with: 
+{\color{code}\begin{verbatim}
+    for i in range(no_particles): 
+        for j in range(i+1,no_particles): 
+            distance=mag(balls[i].pos-balls[j].pos) 
+            if distance<(balls[i].radius+balls[j].radius): 
+                print 'collision', distance 
+\end{verbatim}}
+Now when you run the program, 'collision' should be written once for each collision. 
+  
+\subsubsection{Exchanging momentum: more vector calculations}
+When two objects collide elastically (without losing energy) in one dimension they swap momentum. 
+If their masses are equal this means they should swap velocity. 
+Since we are modelling the interaction between particles as hard spheres, 
+with no friction, the force at impact is only along the line joining the centres of the balls. 
+The balls exchange momentum in this direction, 
+leaving the perpendicular velocity components unchanged. 
+The result is similar to the way billiard balls collide.
+The section of code that detects a collision and swaps the velocity component of the two balls 
+in the collision direction looks like:
+{\color{code}\begin{verbatim}
+    for i in arange(no_particles): 
+        for j in arange(i+1,no_particles): 
+            distance=mag(balls[i].pos-balls[j].pos) 
+            if distance<(balls[i].radius+balls[j].radius): 
+                direction=norm(balls[j].pos-balls[i].pos) 
+                vi=dot(balls[i].velocity,direction) 
+                vj=dot(balls[j].velocity,direction) 
+                exchange=vj-vi 
+                balls[i].velocity=balls[i].velocity+exchange*direction 
+                balls[j].velocity=balls[j].velocity-exchange*direction 
+\end{verbatim}}
+The function {\color{code}norm} returns a vector with the same direction as the input 
+but with its magnitude normalised to one. 
+The function {\color{code}dot} returns the dot product of the two input vectors, 
+in this case the component of the ball's velocity that is in the collision direction. 
+
+You should now have a program that shows ten spheres bouncing around inside a box 
+and bouncing off each other. 
+You might find that balls occasionally get stuck together, 
+particularly if three or more balls collide at the same time. 
+This problem is reduced by making the time step smaller. 
+We can also make the collisions more accurate, and stop balls sticking together, 
+by adjusting the position of the balls after a collision, in much the same way we did 
+for collisions with the sides of the box. 
+{\color{code}\begin{verbatim}
+                overlap=2*ballradius-distance 
+                balls[i].pos=balls[i].pos - overlap*direction 
+                balls[j].pos=balls[j].pos + overlap*direction 
+\end{verbatim}}
+%An example solution is at \href{manybounce1.py}{manybounce1.py}
+% \href{manybounce1.html}{(html version)}
+\href{manybounce1.html}{Example solution} 
+
+\subsection{Program speed}
+The program you have written shows a simple model of the behaviour of particles within a gas. 
+Play around with changing the number and size of particles and their average velocities. 
+As you add more particles the speed of the program slows down significantly. 
+Doubling the number of particles may increase the time to run the program by four times. 
+This is because the number of steps to check for collisions increases as the square of the 
+number of particles. 
+Many computational science models which are based on interacting particles have this $N^2$ speed dependence.  
+Models with large numbers of particles need high speed computers and efficient programs. 
+
+Increasing the speed of a simulation program can make up a large part of the work of a 
+computational scientist. 
+Tactics for improving the efficiency of a program include:
+\begin{itemize}
+\item{removing unneccessary calculations (eg the calculation of the distance between particles involves calculating a square root whch is quite slow. The comparison of particle separation for detecting collisions could be made just as easily with the square of the distance which is much quicker to calculate.)}
+\item{Saving results of calculations instead of repeating them. }
+\item{Using more efficient data constructions (eg the elements of lists in python are not necessarily all the same data type. This makes them flexible for many different programming tasks but the program takes longer to access this data. Python arrays have each element the same data type and are faster to work with.) }
+\item{Improved mathematical algorithms which allow larger step sizes for the same accuracy.}
+\item{Minimise the number of particles needed by the model}
+\item{Include only the most important interactions.} 
+\end{itemize}
+
+%\href{quickbounce1.py}{quickbounce1.py} is a faster version of the above example program.
+\href{quickbounce1.html}{Here} is a faster version of the ideal gas simulation program.
+
+\subsection{Extracting useful information}
+The visualisation of a model can be useful in itself to get insight into its behaviour. 
+But the program might be more useful as a computational science 'experiment' if we 
+could extract from it predictions of gas behaviour that could be measured in a 
+physical experiment or were relevant in some real world application. 
+Alternatively we could use the results to confirm some theory about ideal gasses. 
+
+To do either of these we need to extract the sort of information that can normally 
+be measured since you don't get to watch the particles of a real gas bouncing around.
+
+Examples of some measurements we could extract from our simulation:
+\begin{itemize}
+\item{measure how the pressure on the walls varies with gas temperature and density}
+\item{distribution of particle velocities}
+\item{collision frequency}
+\end{itemize}
+\section{Velocity distribution: using graphs}
+We gave our particles a uniform inititial velocity distribution for each direction. 
+A statistical analysis suggests that the 'most likely' velocity distribution for each 
+component will have more low energy particles and a long tail of high energy particles. 
+Does our gas evolve to this 'most likely' velocity distribution.
+
+\subsection{Graphing in visual python}
+We will need the graphing functions contained in the visual.graph module, so insert a line 
+at the beginning of your program
+{\color{code}\begin{verbatim}
+from visual.graph import *
+\end{verbatim}}
+Several types of graph are available. 
+We will use a histogram that displays how many particles fit into each velocity range. 
+This graph is set up before the main while loop with:
+{\color{code}\begin{verbatim}
+graphwindow=gdisplay(xtitle='v_x',ytitle='N',ymax=no_particles/2)
+velocity_dist=ghistogram(bins=arange(0,2*maxv,maxv/5))
+\end{verbatim}}
+velocity\_dist defines a histogram with a set of ten velocity 'bins' into which the list of 
+particle velocities will be sorted. 
+You might want to adjust the number of bins depending on the number of particles in your gas. 
+The graph will be displayed in a new graphing window. 
+
+To plot the distribution of particle speeds in the x direction you would form a list and use 
+this list as data for the histogram
+{\color{code}\begin{verbatim}
+vlist=[]
+for ball in balls:
+        vlist.append(abs(ball.velocity.x))
+velocity_dist.plot(data=vlist)
+\end{verbatim}}
+You can put these lines within the while loop and see the velocity distribution evolve. 
+Unless you have many particles in your gas the velocity distribution will jump around alot. 
+You can reduce this problem by averaging the distribution over time using:
+{\color{code}\begin{verbatim}
+velocity_dist=ghistogram(bins=arange(0,2*maxv,maxv/5),accumulate=1,average=1)
+\end{verbatim}}
+(You may find that displaying the graph slows down the simulation considerably. 
+If this is a problem, turn your while loop into a for loop so that it runs for a limited time 
+and put all the graphing parts of the program after the loop finishes.)
+
+If you are using the quick version of the code the velocity is stored as in varray, 
+which can be fed directly to the histogram as:
+{\color{code}\begin{verbatim}
+     velocity_dist.plot(data=varray[:,0])
+\end{verbatim}}
+\subsection{Compare with expected result}
+The expected 'most likely' velocity distribution can be plotted for comparison as a curve set 
+up with:
+{\color{code}\begin{verbatim}
+expected_distribution=gcurve(color=color.green)
+\end{verbatim}}
+and then plotted point by point with:
+{\color{code}\begin{verbatim}
+for vx in arange(0,2*maxv,maxv/20):
+        expected_distribution.plot(pos=(vx,.3*no_particles*exp(-vx**2/maxv**2*3/2)))
+\end{verbatim}}
+(plot only once - so just before while loop. You may need to rescale this graph if you 
+used a different number of velocity bins)
+
+% An example of graphing with the quick program is 
+%\href{quickbouncevdist.py}{quickbouncevdist.py}
+\href{quickbouncevdist.html}{Here} is an example of graphing with the quick program.
+%An example of graphing with the slower program is
+%\href{manybouncevdist.py}{manybouncevdist.py}
+\href{manybouncevdist.html}{Here} is an example of graphing with the slower program.
+
+Some questions that you could use this program to investigate:
+\begin{itemize}
+\item {Is the initial velocity distribution different from the final velocity distribution?}
+\item{Does the final velocity distribution match the expected result?}
+\item{Does changing the initial velocity distribution effect the final distribution?}
+\item{Consider the ways this simulation is different from a real gas. 
+What changes might you need to make to model a real gas more closely? 
+How might this effect the behaviour of the simulation?}
+\end{itemize}
+\section{More complicated simulations}
+You could extend this simulation to investigate more complex situations.
+\begin{itemize}
+\item{Mixing of two ideal gasses (diffusion)(eg look at \href{quicktwogas.html}{quicktwogas})}
+\item{Heat conduction}
+\item{Other interaction potentials including some attraction may give phase change to 
+solid or liquid phases}
+\item{Include effects of earth's gravity to get height variations in pressure and 
+temperature - or better simulation of liquid/gas interface}
+\item{Velocity distribution when a gas includes molecules of different masses} 
+\item{Movable or elastic walls (eg look at \href{quickbounce2.html}{quickbounce2})}
+\end{itemize}
+%\section{Other situations that can be modelled using similar techniques}
+%The technique of following individual particles, calculating their accelerations 
+%due to their position and the position of other particles around them can be used 
+%to simulate a wide variety of situations.
+%\begin{itemize}
+%\item{Molecular dynamics and computational chemistry can determine the 
+%shape of molecules, their resonant frequencies and their potential reactions. 
+%The most difficult part is to determine the interaction potentials which can depend on 
+%relative positions of more than two particles, and also on angles between them.}
+%\item{Gravitational interactions determine the orbits of planets in the solar system. 
+%Precise calculations of these orbits determine whether the solar system is stable or chaotic, 
+%whether orbits may change drastically at some future time, give clues as to how the solar 
+%system form, and whether any asteroid is likely to hit the earth. 
+%With large objects like planets their shape and rotation may need to be taken into account.}
+%\item{Animal behaviour. Animals use the positions of other animals and objects around them to decide how they 
+%should move in order to acheive their goals. The goals might include getting food, fleeing predators, staying 
+%in a group and avoiding collisions. This simulations apply to people and traffic flow and can be used to design
+%adequate escape routes from burning buildings and sinking ships, road systems that minimise congestions, or to 
+%suggest driving techniques that avoid collisions.}
+
+\end{document} 
