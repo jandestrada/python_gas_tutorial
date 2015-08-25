@@ -1,4 +1,6 @@
-**Using VPython to Simulate a Gas**\
+Using VPython to Simulate a Gas
+===============================
+
 **Sally Lloyd and Stephen Roberts**
 
 This tutorial follows on from the [bouncing ball
@@ -9,17 +11,17 @@ tutorial as this tutorial is based on the solution obtained from the
 previous tutorial.
 
 A clean version of the bouncing ball program can be obtained from the
-link below. [Example bouncing ball program](bounce2.html)
+link below. [Example bouncing ball program](bounce2.py)
 
 Start IDLE by clicking on the snake icon on the panel at the bottom of
 your desktop. A window labelled ’Untitled’ should appear. This is the
 window in which you will type your program. Open your bouncing ball
-program, or cut and paste the [clean version with 6 walls](bounce2.html)
-into IDLE. Check to see if it is working. You see a ball bouncing in a
+program, or cut and paste the [clean version with 6 walls](bounce2.py)
+into VIDLE. Check to see if it is working. You see a ball bouncing in a
 box.
 
 Simulating particle motion in a gas
-===================================
+-----------------------------------
 
 Now you will extend the bouncing ball program so that it simulates the
 motion of atoms in a gas. There will need to be many atoms in the box
@@ -41,10 +43,10 @@ random number generator by inserting the line
 
     from random import uniform
 
-at the beginning of the program; in the “Import Library(s)” section of
+at the beginning of the program; in the "Import Library(s)" section of
 the code.
 
-The function <span>uniform(-1,1)</span> will give a random number
+The function `uniform(-1,1)` will give a random number
 between -1 and 1. You can set a random ball velocity by replacing the
 line setting the ball’s velocity with:
 
@@ -56,10 +58,8 @@ Multiple balls: Using lists
 To simulate a gas we will need many particles inside the box. One easy
 way of dealing with many particles is to put them into a list.
 
-Replace the “Create Ball(s)” section of code with the following code (it
+Replace the "Create Ball(s)'' section of code with the following code (it
 should be instead of the code defining the ball and its velocity):
-
-------------------------------------------------------------------------
 
     ##########################################
     # Create Ball(s)
@@ -76,24 +76,23 @@ should be instead of the code defining the ball and its velocity):
         ball.velocity=maxv*vector(uniform(-1,1),uniform(-1,1),uniform(-1,1))
         ball_list.append(ball)
 
-------------------------------------------------------------------------
 
-The construction of a <span>for</span> loop in python is slightly
+The construction of a `for` loop in python is slightly
 different from many other programming languages which cycle through a
 set of numbers. Python iterates through a list. To get the more usual
-counted for loop you use <span>range</span> to create a list of integers
-between 0 and <span>no\_particles-1</span>.
+counted for loop you use `range` to create a list of integers
+between 0 and `no_particles-1`.
 
-This gives a list called <span>ball\_list</span> containing 10 balls.
+This gives a list called `ball_list` containing 10 balls.
 Any type of object can go into a list. In fact a list can be made up of
 several different types of object. If you run the code now you will see
 10 balls within the box but the “Time Loop” section of code only moves
-one of the balls (the last one created in the <span>for</span> loop,
-which is called <span>ball</span>).
+one of the balls (the last one created in the `for` loop,
+which is called `ball`).
 
-To move all the balls in a list you use another <span>for</span> loop.
-In python a <span>for</span> loop cycles through the elements of a list.
-We need to loop through all the balls in the list <span>balls</span>.
+To move all the balls in a list you use another `for` loop.
+In python a `for` loop cycles through the elements of a list.
+We need to loop through all the balls in the list `balls`.
 The loop to move all the balls in the list would look like:
 
     while (1==1):
@@ -157,8 +156,7 @@ For each pair of particles we need to check whether the distance between
 them is less than the sum of their radii. For example add the following
 lines to the end of your program, after you have updated the position of
 all the particles. The indentation should place it within the time
-<span>while</span> loop but outside the wall collision <span>for</span>
-loop.
+`while` loop but outside the wall collision `for` loop.
 
         ######################################
         # Ball Collision Detection
@@ -170,7 +168,7 @@ loop.
                     if distance<(ball.radius+otherball.radius):
                         print 'collision' , distance
 
-<span>mag</span> is a function that returns the size (magnitude) of a
+`mag` is a function that returns the size (magnitude) of a
 vector.
 
 Run your program. Notice that every time a pair of balls collide in the
@@ -205,8 +203,6 @@ collide. The section of code that detects a collision and swaps the
 velocity component of the two balls in the collision direction looks
 like:
 
-------------------------------------------------------------------------
-
         ######################################
         # Ball Collision Detection
         ######################################
@@ -226,11 +222,10 @@ like:
                     ball_list[i].velocity=ball_list[i].velocity + exchange*direction
                     ball_list[j].velocity=ball_list[j].velocity - exchange*direction
 
-------------------------------------------------------------------------
 
-The function <span>norm</span> returns a vector with the same direction
+The function `norm` returns a vector with the same direction
 as the input but with its magnitude normalised to one. The function
-<span>dot</span> returns the dot product of the two input vectors, in
+`dot` returns the dot product of the two input vectors, in
 this case the component of the ball’s velocity that is in the collision
 direction.
 
@@ -271,29 +266,28 @@ Increasing the speed of a simulation program can make up a large part of
 the work of a computational scientist. Tactics for improving the
 efficiency of a program include:
 
--   <span>removing unnecessary calculations (eg the calculation of the
+-   removing unnecessary calculations (eg the calculation of the
     distance between particles involves calculating a square root which
     is quite slow. The comparison of particle separation for detecting
     collisions could be made just as easily with the square of the
-    distance which is much quicker to calculate.)</span>
+    distance which is much quicker to calculate.)
 
--   <span>Saving results of calculations instead of repeating them.
-    </span>
+-   Saving results of calculations instead of repeating them.
 
--   <span>Using more efficient data constructions (eg the elements of
+-   Using more efficient data constructions (eg the elements of
     lists in python are not necessarily all the same data type. This
     makes them flexible for many different programming tasks but the
     program takes longer to access this data. Python arrays have each
-    element the same data type and are faster to work with.) </span>
+    element the same data type and are faster to work with.)
 
--   <span>Improved mathematical algorithms which allow larger step sizes
-    for the same accuracy.</span>
+-   Improved mathematical algorithms which allow larger step sizes
+    for the same accuracy.
 
--   <span>Minimise the number of particles needed by the model</span>
+-   Minimise the number of particles needed by the model
 
--   <span>Include only the most important interactions.</span>
+-   Include only the most important interactions.
 
-[Here](quickbounce1.html) is a faster version of the ideal gas
+[Here](quickbounce1.py) is a faster version of the ideal gas
 simulation program.
 
 Extracting useful information
@@ -312,12 +306,12 @@ real gas bouncing around.
 
 Examples of some measurements we could extract from our simulation:
 
--   <span>measure how the pressure on the walls varies with gas
-    temperature and density</span>
+-   measure how the pressure on the walls varies with gas
+    temperature and density
 
--   <span>distribution of particle velocities</span>
+-   distribution of particle velocities
 
--   <span>collision frequency</span>
+-   collision frequency
 
 Velocity distribution: using graphs
 ===================================
@@ -343,7 +337,7 @@ set up before the main time while loop with:
     graphwindow=gdisplay(xtitle='v_x',ytitle='N',ymax=no_particles/2)
     velocity_dist=ghistogram(bins=arange(0,2*maxv,maxv/5))
 
-<span>velocity\_dist</span> defines a histogram with a set of ten
+`velocity_dist` defines a histogram with a set of ten
 velocity ’bins’ into which the list of particle velocities will be
 sorted. You might want to adjust the number of bins depending on the
 number of particles in your gas. The graph will be displayed in a new
@@ -362,7 +356,7 @@ distribution evolve. Unless you have many particles in your gas the
 velocity distribution will jump around a lot.
 
 You can reduce this problem by averaging the distribution over time.
-Change the code which defines <span>velocity\_dist</span> using:
+Change the code which defines `velocity_dist` using:
 
     velocity_dist=ghistogram(bins=arange(0,2*maxv,maxv/5),accumulate=1,average=1)
 
@@ -372,14 +366,14 @@ so that it runs for a limited time and put all the graphing parts of the
 program after the loop finishes.)
 
 If you are using the quick version of the code the velocity is stored as
-in <span>p\_array</span>, which can be fed directly to the histogram as:
+in `p_array`, which can be fed directly to the histogram as:
 
          velocity_dist.plot(data=abs(p_array[:,0]))
 
 Compare with expected result
 ----------------------------
 
-The expected ’most likely’ velocity distribution can be plotted for
+The expected "most likely" velocity distribution can be plotted for
 comparison as a curve set up with:
 
     expected_distribution=gcurve(color=color.green)
@@ -389,50 +383,50 @@ comparison as a curve set up with:
 (plot only once - so just before while loop. You may need to rescale
 this graph if you used a different number of velocity bins)
 
-[Here](quickbouncepdist.html) is an example of graphing with the quick
+[Here](quickbouncepdist.py) is an example of graphing with the quick
 program.
 
-[Here](manybouncepdist.html) is an example of graphing with the slower
+[Here](manybouncepdist.py) is an example of graphing with the slower
 program.
 
 Some questions that you could use this program to investigate:
 
--   <span>Is the initial velocity distribution different from the final
-    velocity distribution?</span>
+-   Is the initial velocity distribution different from the final
+    velocity distribution?
 
--   <span>Does the final velocity distribution match the expected
-    result?</span>
+-   Does the final velocity distribution match the expected
+    result?
 
--   <span>Does changing the initial velocity distribution effect the
-    final distribution?</span>
+-   Does changing the initial velocity distribution effect the
+    final distribution?
 
--   <span>Consider the ways this simulation is different from a real
+-   Consider the ways this simulation is different from a real
     gas. What changes might you need to make to model a real gas more
     closely? How might this effect the behaviour of the
-    simulation?</span>
+    simulation?
 
 More complicated simulations
 ============================
 
 You could extend this simulation to investigate more complex situations.
 
--   <span>Mixing of two ideal gasses (diffusion)(eg look at
-    [quicktwogas](quicktwogas.html))</span>
+-   Mixing of two ideal gasses (diffusion)(eg look at
+    [quicktwogas](quicktwogas.html))
 
--   <span>Heat conduction</span>
+-   Heat conduction
 
--   <span>Other interaction potentials including some attraction may
-    give phase change to solid or liquid phases</span>
+-   Other interaction potentials including some attraction may
+    give phase change to solid or liquid phases
 
--   <span>Include effects of earth’s gravity to get height variations in
+-   Include effects of earth’s gravity to get height variations in
     pressure and temperature - or better simulation of liquid/gas
-    interface</span>
+    interface
 
--   <span>Velocity distribution when a gas includes molecules of
-    different masses</span>
+-   Velocity distribution when a gas includes molecules of
+    different masses
 
--   <span>Movable or elastic walls (eg look at
-    [quickbounce2](quickbounce2.html))</span>
+-   Movable or elastic walls (eg look at
+    [quickbounce2](quickbounce2.html))
 
 Other situations that can be modelled using similar techniques
 ==============================================================
@@ -441,27 +435,27 @@ The technique of following individual particles, calculating their
 accelerations due to their position and the position of other particles
 around them can be used to simulate a wide variety of situations.
 
--   <span>Molecular dynamics and computational chemistry can determine
+-   Molecular dynamics and computational chemistry can determine
     the shape of molecules, their resonant frequencies and their
     potential reactions. The most difficult part is to determine the
     interaction potentials which can depend on relative positions of
-    more than two particles, and also on angles between them.</span>
+    more than two particles, and also on angles between them.
 
--   <span>Gravitational interactions determine the orbits of planets in
+-   Gravitational interactions determine the orbits of planets in
     the solar system. Precise calculations of these orbits determine
     whether the solar system is stable or chaotic, whether orbits may
     change drastically at some future time, give clues as to how the
     solar system form, and whether any asteroid is likely to hit the
     earth. With large objects like planets their shape and rotation may
-    need to be taken into account.</span>
+    need to be taken into account.
 
--   <span>Animal behaviour. Animals use the positions of other animals
+-   Animal behaviour. Animals use the positions of other animals
     and objects around them to decide how they should move in order to
     achieve their goals. The goals might include getting food, fleeing
     predators, staying in a group and avoiding collisions. This
     simulations apply to people and traffic flow and can be used to
     design adequate escape routes from burning buildings and sinking
     ships, road systems that minimise congestions, or to suggest driving
-    techniques that avoid collisions.</span>
+    techniques that avoid collisions.
 
 
