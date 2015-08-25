@@ -272,8 +272,8 @@ become part of the while loop. Your program should now look like this:
 
 Run your program. You should observe that the ball moves to the right,
 bounces off the wall, and then moves to the left, continuing off into
-space. Note that our test is not very sophisticated. ball.x
-is at the centre of the ball and wallR.x is at the centre
+space. Note that our test is not very sophisticated. `ball.x`
+is at the centre of the ball and `wallR.x` is at the centre
 of the wall so the ball penetrates the wall before it bounces.
 
 Adjust the collision test so that the ball bounces when the edge of the

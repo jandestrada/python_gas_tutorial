@@ -114,24 +114,19 @@ The loop to move all the balls in the list would look like:
 Here you **only** have to add in the following code and get the
 indentation right.
 
-------------------------------------------------------------------------
-
     ######################################
     # Loop over list of particles
     # Move and check wall collisions
     ######################################
     for ball in ball_list:
 
-------------------------------------------------------------------------
 
 The code within the for loop is indented by two levels since it is also
 inside the while loop (with code inside the if indented an additional
 level). You can indent a whole section by selecting it and then choosing
-’indent section’ from the format menu. (Try running the program now to
+"indent section" from the format menu. (Try running the program now to
 see 10 balls bouncing within your box)
 
-If you have have trouble, or are running out of time, [here is the code
-for the 10 bouncing balls in a box](manybounce0.html)
 
 Maybe you would like to play with increasing the number of balls, or
 changing the radii of the balls, or the colours or what ever.
@@ -144,9 +139,9 @@ inside a box. At the moment the balls are simply passing through each
 other. For this to be a realistic model of a gas, the particles need to
 interact in some fashion.
 
-Different ’interaction potentials’ could be used depending on the type
+Different "interaction potentials" could be used depending on the type
 of molecule making up the gas. For an ideal gas an appropriate
-interaction is ’hard sphere collisions’ — the balls bounce off each
+interaction is "hard sphere collisions" — the balls bounce off each
 other the same way they bounce off the walls.
 
 ### Detecting a collision
@@ -187,7 +182,7 @@ collision detection code with:
                 if distance<(ball_list[i].radius+ball_list[j].radius):
                     print 'collision', distance
 
-Now when you run the program, ’collision’ should be written once for
+Now when you run the program, "collision" should be written once for
 each collision.
 
 ### Exchanging momentum: more vector calculations
@@ -246,7 +241,7 @@ much the same way we did for collisions with the sides of the box.
 
 ------------------------------------------------------------------------
 
-[Example solution](manybounce1.html)
+[Example solution](manybounce1.py)
 
 Program speed
 -------------
@@ -317,10 +312,10 @@ Velocity distribution: using graphs
 ===================================
 
 We gave our particles a uniform initial velocity distribution for each
-direction. A statistical analysis suggests that the ’most likely’
+direction. A statistical analysis suggests that the "most likely"
 velocity distribution for each component will have more low energy
 particles and a long tail of high energy particles. Does our gas evolve
-to this ’most likely’ velocity distribution.
+to this "most likely" velocity distribution.
 
 Graphing in visual python
 -------------------------
@@ -335,10 +330,11 @@ displays how many particles fit into each velocity range. This graph is
 set up before the main time while loop with:
 
     graphwindow=gdisplay(xtitle='v_x',ytitle='N',ymax=no_particles/2)
+    
     velocity_dist=ghistogram(bins=arange(0,2*maxv,maxv/5))
 
 `velocity_dist` defines a histogram with a set of ten
-velocity ’bins’ into which the list of particle velocities will be
+velocity "bins" into which the list of particle velocities will be
 sorted. You might want to adjust the number of bins depending on the
 number of particles in your gas. The graph will be displayed in a new
 graphing window.
@@ -411,7 +407,7 @@ More complicated simulations
 You could extend this simulation to investigate more complex situations.
 
 -   Mixing of two ideal gasses (diffusion)(eg look at
-    [quicktwogas](quicktwogas.html))
+    [quicktwogas](quicktwogas.py))
 
 -   Heat conduction
 
