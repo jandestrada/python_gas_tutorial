@@ -1,3 +1,3 @@
-# python_gas_tutorial
+# Python Gas Tutorial
 
 Tutorial using python to produce a simulation of gas.
