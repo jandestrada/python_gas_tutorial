@@ -6,9 +6,9 @@ Using VPython to Simulate a Ball Bouncing in a Box
 Overview
 --------
 
-This tutorial will take you through a "toy" problem in computational
+This tutorial will take you through a 'toy' problem in computational
 science. You will develop a computer program that simulates the motion
-of a ball in a box . This program will be written in visual python – a
+of a ball in a box . This program will be written in visual python - a
 language designed to make the development of this type of physical
 simulation simple.
 
@@ -54,7 +54,7 @@ systems. VPython has three components that you will deal with directly:
     code, try your program, and get information about your program.
     
 
-This tutorial starts with a cut down version of the ’standard’ VPython
+This tutorial starts with a cut down version of the 'standard' VPython
 tutorial. The tutorial assumes that Python and Visual are installed on
 the computer you are using. If you need to install any of these, follow
 this link to the [VPython web page](http://www.vpython.org/)
@@ -70,12 +70,12 @@ to become a simulation of an ideal gas.
 Your First Program
 ------------------
 
-Start VPython or VIDLE (an editor for creating Python computer code).
+Start VPython or IDLE (an editor for creating Python computer code).
 
 If you are using a windows machine this will probably be possible via
 the start menu.
 
-If you are working on a Unix (Linux) computer, then type “vpython” at a
+If you are working on a Unix (Linux) computer, then type 'vpython' at a
 prompt on a shell window. This will bring up an interactive Python
 window. You then need to select New Window from the File menu of this
 first Python window.
@@ -84,7 +84,7 @@ Vpython will demand that you save a copy of your working file somewhere
 before it will execute the program. Save it in your present working
 directory which will probably be /student/\<username\>
 
-A window labelled ’Untitled’ should appear. This is the window in which
+A window labelled 'Untitled' should appear. This is the window in which
 you will type your program. Type the following statements (You can
 select the text below and then paste it into IDLE.):
 
@@ -120,17 +120,17 @@ comments for two reason,
 Running the Program
 -------------------
 
-Now run your program by choosing "Run program" from the "Run" menu. When
+Now run your program by choosing 'Run program' from the 'Run' menu. When
 you run the program, two new windows appear. There is a window titled
-"VPython," in which you should see a green sphere and a red rectangle
-(wall), and another window titled "Output".
+'VPython,' in which you should see a green sphere and a red rectangle
+(wall), and another window titled 'Output'.
 
 In the VPython window, hold down the middle mouse button and move the
 mouse. You should see that you are able to zoom into and out of the
 scene. Now try holding down the right mouse button . You should find
 that you are able to rotate your view of the scene.
 
-You can stop the program by choosing "Stop program" from the run menu
+You can stop the program by choosing 'Stop program' from the run menu
 (or closing the graphics window).
 
 You might want to play with changing the radius of the ball, the colour
@@ -165,8 +165,8 @@ lines of code following the while statement, as long as the while
 condition remains true.
 
 Add the following assignments and while loop to the bottom of your
-program. The setting of the ball velocity should be part of the "Create
-Ball(s)" part of the code. The ball should be able to move according to
+program. The setting of the ball velocity should be part of the 'Create
+Ball(s)' part of the code. The ball should be able to move according to
 the velocity specified.
 
     ball.velocity=vector(2,.1,0)
@@ -184,7 +184,7 @@ the velocity specified.
         ball.pos=ball.pos + ball.velocity*timestep
 
 The symbol `=` is used for assignment, to set a new value for
-a variable. In Python `==` stands for "is equal to" so the
+a variable. In Python `==` stands for 'is equal to' so the
 statement `1==1` always has a value of true, and code inside
 the while loop will repeat forever. Loops are a little strange in
 Python. Most other languages use some code for the end of a loop, say a
@@ -201,9 +201,9 @@ element by element.
 
 The rate statement specifies the number of times the loop will be
 executed per second. It allows you to control the animation speed so
-that the ball doesn’t move too fast on fast computers.
+that the ball doesn't move too fast on fast computers.
 
-Run your program by choosing "Run program" from the "Run" menu. You
+Run your program by choosing 'Run program' from the 'Run' menu. You
 should observe that the ball moves to the right. You can change how fast
 either by changing the rate or the timestep.
 
@@ -229,7 +229,7 @@ the velocity might look like:
             ball.velocity.x = -ball.velocity.x
 
 The indented line after the if statement will be executed only if the
-logical test in the previous line gives "true" for the comparison. If
+logical test in the previous line gives 'true' for the comparison. If
 the result of the logical test is false (that is, if the x coordinate of
 the ball is not greater than the x coordinate of the wall), the indented
 line will be skipped. Since we want this logical test to be performed
